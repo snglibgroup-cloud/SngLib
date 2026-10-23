@@ -494,7 +494,6 @@ a:focus-visible,button:not([data-baseweb="tab"]):focus-visible,summary:focus-vis
 .ent summary{cursor:pointer;opacity:.85;font-weight:500}
 .ent details p{margin:.5rem 0 0;line-height:1.55}
 .ent details b{font-weight:600}
-@media (max-width:640px){.ent{grid-template-columns:1fr}.ent .yr{width:4rem;margin-bottom:.4rem}.mark{font-size:2.1rem}}
 
 /* Bảng */
 .tw{overflow-x:auto;margin:.4rem 0 1rem}
@@ -517,6 +516,99 @@ div[data-testid="stPopoverBody"]:has(details[open]){width:min(1180px,96vw)!impor
 div[data-testid="stPopoverBody"] img{image-rendering:-webkit-optimize-contrast;image-rendering:high-quality}
 div[data-testid="stPopover"] button [data-testid="stIconMaterial"],
 div[data-testid="stPopover"] button span[class*="Icon"]{font-size:.9rem!important;width:.9rem!important;height:.9rem!important}
+
+/* ===== Tối ưu điện thoại ===== */
+html{-webkit-text-size-adjust:100%}
+.stApp{overflow-x:hidden}
+.tw{-webkit-overflow-scrolling:touch}
+/* Thanh mục: cuộn ngang bằng ngón tay, không bị bẻ dòng */
+[data-testid="stSegmentedControl"] > div,[data-testid="stSegmentedControl"] [role="group"]{max-width:100%}
+@media (max-width:768px){
+  .block-container{padding:1rem .8rem 3rem!important;max-width:100%}
+  header[data-testid="stHeader"]{height:2.6rem}
+  .mark{font-size:2rem}
+  .sub{font-size:.92rem}
+  div.sec{font-size:1.15rem;margin:1.2rem 0 .5rem}
+  div.sec small{display:block;margin:.1rem 0 0}
+
+  /* Ô tìm kiếm: ô nhập và nút Tìm nằm cùng một hàng; chữ 16px để iOS không tự phóng to */
+  [data-testid="stForm"] [data-testid="stHorizontalBlock"]{flex-wrap:nowrap!important;gap:.5rem!important}
+  [data-testid="stForm"] [data-testid="stColumn"]{min-width:0!important}
+  [data-testid="stForm"] [data-testid="stColumn"]:last-child{flex:0 0 auto!important;width:auto!important}
+  [data-testid="stTextInput"] input{font-size:16px;padding:.7rem .85rem}
+  input,textarea,select{font-size:16px!important}
+  [data-testid="stForm"] button{min-height:2.9rem;padding:0 1.1rem}
+
+  /* Nút bấm đủ lớn để chạm */
+  .stButton button,.stDownloadButton button,[data-testid="stLinkButton"] a,[data-testid="stPopover"] button{min-height:2.75rem}
+
+  /* Thanh mục và bộ lọc thời gian: một hàng, vuốt ngang */
+  [data-testid="stSegmentedControl"]{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%}
+  [data-testid="stSegmentedControl"]::-webkit-scrollbar{display:none}
+  [data-testid="stSegmentedControl"] [role="group"],[data-testid="stSegmentedControl"] > div > div{flex-wrap:nowrap!important}
+  [data-testid="stSegmentedControl"] button{white-space:nowrap;flex:0 0 auto;min-height:2.6rem}
+
+  /* Thống kê gọn lại */
+  .strip{margin:.8rem 0 .3rem;font-size:.85rem}
+  .strip span{padding:0 .8rem}
+  .strip b{font-size:1.2rem}
+
+  /* Thẻ tài liệu: năm nằm trên đầu, nút Tải PDF / Mở bài chia đều chiều ngang */
+  .ent{grid-template-columns:1fr;gap:0;padding:.9rem 0}
+  .ent .yr{width:3.6rem;margin-bottom:.45rem;font-size:1.05rem}
+  .ent .ti{font-size:1.08rem}
+  .ent .au{font-size:.86rem}
+  .acts{display:flex;gap:.5rem;flex-wrap:wrap}
+  a.lk,a.lk.sec{flex:1 1 40%;text-align:center;margin:0;padding:10px 12px;font-size:.9rem}
+  .ent summary{padding:.5rem 0}
+
+  /* Bảng thành thẻ xếp dọc: mỗi dòng là một thẻ, mỗi ô có nhãn cột */
+  .tw{overflow-x:visible}
+  .tb,.tb tbody,.tb tr,.tb td{display:block;width:100%}
+  .tb thead{display:none}
+  .tb tr{border:1px solid var(--line);border-radius:10px;padding:.35rem .8rem;margin:0 0 .7rem;background:var(--soft)}
+  .tb td,.tb td.n,.tb td.l,.tb td.w{display:flex;gap:.8rem;justify-content:space-between;align-items:baseline;
+       width:100%;min-width:0;text-align:right;white-space:normal;padding:7px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .tb td:last-child{border-bottom:0}
+  .tb td::before{content:attr(data-label);flex:0 0 36%;max-width:36%;text-align:left;font-size:.76rem;font-weight:600;opacity:var(--mute)}
+  .tb td:empty{display:none}
+  .tb td.w{display:block;text-align:left}
+  .tb td.w::before{display:block;max-width:none;margin-bottom:.2rem}
+  .tb td > a{padding:4px 0}
+
+  /* Hàng nút Trước / Sau: giữ trên một hàng, caption xuống dòng dưới */
+  [class*="st-key-nav_"] [data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.5rem!important}
+  [class*="st-key-nav_"] [data-testid="stColumn"]{min-width:0!important}
+  [class*="st-key-nav_"] [data-testid="stColumn"]:nth-child(-n+2){flex:1 1 calc(50% - .5rem)!important;width:calc(50% - .5rem)!important}
+  [class*="st-key-nav_"] [data-testid="stColumn"]:nth-child(3){flex:1 1 100%!important;width:100%!important}
+
+  /* Hàng công cụ (kiểu hiển thị, APA, CSV): 2 cột gọn */
+  [class*="st-key-tools"] [data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.5rem!important}
+  [class*="st-key-tools"] [data-testid="stColumn"]{flex:1 1 calc(50% - .5rem)!important;width:calc(50% - .5rem)!important;min-width:0!important}
+  [class*="st-key-tools"] [data-testid="stColumn"]:first-child{flex:1 1 100%!important;width:100%!important}
+
+  /* Hàng bộ lọc: thanh thời gian một hàng riêng, Có PDF và OpenAlex chia đôi hàng dưới */
+  [class*="st-key-filters"] [data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.5rem!important}
+  [class*="st-key-filters"] [data-testid="stColumn"]{flex:1 1 calc(50% - .5rem)!important;width:calc(50% - .5rem)!important;min-width:0!important}
+  [class*="st-key-filters"] [data-testid="stColumn"]:first-child{flex:1 1 100%!important;width:100%!important}
+
+  /* Khung năm tùy chọn và các nút gợi ý chủ đề: 2 cột / xếp dọc */
+  [class*="st-key-years"] [data-testid="stHorizontalBlock"]{flex-wrap:nowrap!important;gap:.5rem!important}
+  [class*="st-key-years"] [data-testid="stColumn"]{min-width:0!important}
+  [class*="st-key-years"] [data-testid="stColumn"]:nth-child(3){display:none}
+
+  /* Link tìm ở nơi khác: 2 nút một hàng */
+  [class*="st-key-links"] [data-testid="stHorizontalBlock"]{flex-wrap:wrap!important;gap:.5rem!important}
+  [class*="st-key-links"] [data-testid="stColumn"]{flex:1 1 calc(50% - .5rem)!important;width:calc(50% - .5rem)!important;min-width:0!important}
+
+  /* Popover OpenAlex: gần full màn hình, ảnh hướng dẫn đủ rộng để đọc */
+  div[data-testid="stPopoverBody"],div[data-testid="stPopoverBody"]:has(details[open]){width:calc(100vw - 1.6rem)!important;max-width:calc(100vw - 1.6rem)!important}
+}
+@media (max-width:380px){
+  .mark{font-size:1.75rem}
+  a.lk,a.lk.sec{flex:1 1 100%}
+  .tb td::before{flex-basis:42%;max-width:42%}
+}
 
 [data-testid="stSpinner"]{padding:.6rem 0;font-weight:500}
 
@@ -602,15 +694,16 @@ def bang(rows, rong="Không có kết quả."):
         tds = []
         for c in df.columns:
             v = r[c]
+            lb = esc(c)
             if c in LINK_NHAN:
                 ok = isinstance(v, str) and v.startswith("http")
-                tds.append(f'<td class="l">{lk_text(v, LINK_NHAN[c]) if ok else ""}</td>')
+                tds.append(f'<td class="l" data-label="{lb}">{lk_text(v, LINK_NHAN[c]) if ok else ""}</td>')
             elif c == "APA":
-                tds.append(f'<td class="w">{v if isinstance(v, str) else ""}</td>')
+                tds.append(f'<td class="w" data-label="{lb}">{v if isinstance(v, str) else ""}</td>')
             elif c in ("STT", "Trích dẫn", "Năm") or isinstance(v, (int, float)) and not pd.isna(v):
-                tds.append(f'<td class="n">{esc(v)}</td>')
+                tds.append(f'<td class="n" data-label="{lb}">{esc(v)}</td>')
             else:
-                tds.append(f"<td>{esc(v if isinstance(v, str) else '')}</td>")
+                tds.append(f'<td data-label="{lb}">{esc(v if isinstance(v, str) else "")}</td>')
         body.append("<tr>" + "".join(tds) + "</tr>")
     st.markdown(f'<div class="tw"><table class="tb"><thead><tr>{head}</tr></thead>'
                 f'<tbody>{"".join(body)}</tbody></table></div>', unsafe_allow_html=True)
@@ -756,7 +849,7 @@ def lay_trang(nguon, key):
 
 
 def dieu_huong(key, tr, n_ds, has_next, pos):
-    c = st.columns([1, 1, 6], vertical_alignment="center")
+    c = st.container(key=f"nav_{key}_{pos}").columns([1, 1, 6], vertical_alignment="center")
     c[0].button("Trước", key=f"p_{key}_{pos}", icon=":material/chevron_left:", disabled=tr <= 1,
                 on_click=doi_trang, args=(key, -1), width="stretch")
     c[1].button("Sau", key=f"n_{key}_{pos}", icon=":material/chevron_right:", disabled=not has_next,
@@ -912,7 +1005,7 @@ if "oa_key" not in st.session_state:
 ANH_HD = os.path.join(os.path.dirname(os.path.abspath(__file__)), "huong_dan_openalex.png")
 
 
-b1, b2, b3 = st.columns([3.6, 1.2, 1.3], vertical_alignment="bottom")
+b1, b2, b3 = st.container(key="filters").columns([3.6, 1.2, 1.3], vertical_alignment="bottom")
 kt = b1.segmented_control("Thời gian xuất bản", [*KHOANG, "Tùy chọn"], default="Tất cả", key="kt",
                           on_change=kich_tim) or "Tất cả"
 chi_pdf = b2.toggle("Có PDF", key="chi_pdf", on_change=kich_tim,
@@ -931,7 +1024,7 @@ with b3.popover("OpenAlex", icon=":material/key:", width="stretch"):
             except TypeError:
                 st.image(ANH_HD, use_container_width=True)
 if kt == "Tùy chọn":
-    n1, n2, _ = st.columns([1, 1, 4])
+    n1, n2, _ = st.container(key="years").columns([1, 1, 4])
     y1 = int(n1.number_input("Từ năm", 1900, NAM_NAY, 2018, 1, key="nam_tu", on_change=kich_tim, format="%d"))
     y2 = int(n2.number_input("Đến năm", 1900, NAM_NAY, NAM_NAY, 1, key="nam_den", on_change=kich_tim, format="%d"))
     if y1 > y2:
@@ -990,7 +1083,7 @@ kq = st.session_state.get("kq")
 
 if not kq:
     tieu_de("Thử một chủ đề")
-    cs = st.columns([1.4, 1.2, 1.3, 2])
+    cs = st.container(key="links_vidu").columns([1.4, 1.2, 1.3, 2])
     for c, t in zip(cs, VI_DU):
         c.button(t, key=f"vd_{t}", on_click=dung_mau, args=(t,), width="stretch")
     st.markdown('<p class="hint">Gõ từ khóa tiếng Anh để ra nhiều bài hơn. Hoặc dán link bài báo hoặc PDF để xem phương pháp và kết quả của bài đó.</p>',
@@ -1018,7 +1111,7 @@ else:
 
     if tab_hien == TEN_TAB[0]:
         if rows_page:
-            top = st.columns([1.6, 0.9, 1.1, 1.5, 3], vertical_alignment="center")
+            top = st.container(key="tools").columns([1.6, 0.9, 1.1, 1.5, 3], vertical_alignment="center")
             kieu = top[0].segmented_control("Kiểu hiển thị", ["Bảng", "Danh sách"], default="Bảng",
                                             key="kieu", label_visibility="collapsed") or "Bảng"
             apa = top[1].toggle("APA", value=False, help="Thêm cột trích dẫn APA vào bảng, danh sách và file CSV")
@@ -1119,9 +1212,9 @@ else:
                     ("ResearchGate (qua Google)", f"https://www.google.com/search?q={q}+site%3Aresearchgate.net"),
                 ],
             }
-            for ten_nhom, ds in nhom.items():
+            for i_nhom, (ten_nhom, ds) in enumerate(nhom.items()):
                 tieu_de(ten_nhom)
-                cols = st.columns(4)
+                cols = st.container(key=f"links_nhom{i_nhom}").columns(4)
                 for i, (ten, link) in enumerate(ds):
                     cols[i % 4].link_button(ten, link, width="stretch")
 
