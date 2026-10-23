@@ -140,7 +140,7 @@ def trich_xuat(text):
 
 
 # ================= OpenAlex =================
-OA_KEY = os.environ.get("OPENALEX_API_KEY", "")   # có thể nhập trong giao diện
+OA_KEY = "NHgQ4B8bYjGAbie6YsbymT"   # khóa OpenAlex gán cứng
 _S = sys.modules.get("_snglib_store") or sys.modules.setdefault(
     "_snglib_store", types.SimpleNamespace(loi=[], cache={}))   # sống qua các lần Streamlit chạy lại script
 OA_LOI = _S.loi                                     # mã lỗi OpenAlex gặp trong lần chạy hiện tại
@@ -614,9 +614,6 @@ html{-webkit-text-size-adjust:100%}
 
 /* Ô khóa OpenAlex: nút lưu sát ô nhập, icon nằm giữa nút */
 div[data-testid="stPopoverBody"] [data-testid="stHorizontalBlock"]{gap:.4rem!important}
-.st-key-nut_luu_khoa button{padding-left:0;padding-right:0}
-.st-key-nut_luu_khoa button p{display:none}
-.st-key-nut_luu_khoa button [data-testid="stIconMaterial"]{margin:0!important}
 /* Ẩn nút Deploy, giữ menu ba chấm đã đổi nội dung */
 [data-testid="stAppDeployButton"],.stAppDeployButton,.stDeployButton{display:none!important}
 </style>
@@ -935,12 +932,11 @@ def nguon_nhom(layg, giau, cot, du_phong, ten, dp):
 st.set_page_config(
     page_title="SngLib", page_icon=ICON_S, layout="wide", initial_sidebar_state="collapsed",
     menu_items={
-        "Get help": "https://openalex.org/settings/api-key",
+        "Get help": None,
         "Report a bug": None,
         "About": ("### SngLib\n"
                   "Kho tài liệu học thuật, tìm nhanh bài báo và PDF miễn phí.\n\n"
-                  "Dữ liệu lấy từ OpenAlex và Crossref. Dán khóa OpenAlex miễn phí ở nút **OpenAlex** "
-                  "để có hạn mức tra cứu cao hơn."),
+                  "Dữ liệu lấy từ OpenAlex và Crossref."),
     })
 st.markdown(CSS, unsafe_allow_html=True)
 st.markdown('<div class="top"><div class="mark">SngLib</div>'
@@ -967,62 +963,11 @@ def dung_mau(t):
     st.session_state["chay"] = True
 
 
-# Chạy trên web (Streamlit Cloud, máy chủ dùng chung) thì KHÔNG ghi khóa ra file, tránh lộ khóa giữa người dùng
-LA_WEB = bool(os.environ.get("SNGLIB_WEB")) or os.path.abspath(__file__).startswith("/mount/src")
-FILE_KHOA = os.path.join(os.environ.get("SNGLIB_HOME") or os.path.dirname(os.path.abspath(__file__)), ".openalex_key")   # bản .exe: lưu cạnh file exe
-
-
-def doc_khoa():
-    if LA_WEB:
-        return ""
-    try:
-        with open(FILE_KHOA, encoding="utf-8") as f:
-            return f.read().strip()
-    except OSError:
-        return ""
-
-
-def luu_khoa():
-    """Lưu khóa vào file trên máy đang chạy app; để trống thì xóa file."""
-    k = (st.session_state.get("oa_key") or "").strip()
-    if LA_WEB:   # bản web: khóa chỉ giữ trong phiên của người đang dùng
-        kich_tim()
-        return
-    try:
-        if k:
-            with open(FILE_KHOA, "w", encoding="utf-8") as f:
-                f.write(k)
-        elif os.path.exists(FILE_KHOA):
-            os.remove(FILE_KHOA)
-    except OSError:
-        pass
-    kich_tim()
-
-
-if "oa_key" not in st.session_state:
-    st.session_state["oa_key"] = doc_khoa()
-
-ANH_HD = os.path.join(os.path.dirname(os.path.abspath(__file__)), "huong_dan_openalex.png")
-
-
-b1, b2, b3 = st.container(key="filters").columns([3.6, 1.2, 1.3], vertical_alignment="bottom")
+b1, b2 = st.container(key="filters").columns([3.6, 1.2], vertical_alignment="bottom")
 kt = b1.segmented_control("Thời gian xuất bản", [*KHOANG, "Tùy chọn"], default="Tất cả", key="kt",
                           on_change=kich_tim) or "Tất cả"
 chi_pdf = b2.toggle("Có PDF", key="chi_pdf", on_change=kich_tim,
                     help="Chỉ giữ các bài có link PDF mở được trực tiếp")
-with b3.popover("OpenAlex", icon=":material/key:", width="stretch"):
-    k1, k2 = st.columns([5, 1], vertical_alignment="bottom")
-    k1.text_input("Khóa OpenAlex", key="oa_key", type="password", on_change=luu_khoa,
-                  help="Không bắt buộc. Có khóa thì hạn mức dùng mỗi ngày cao hơn. Bấm Enter hoặc Lưu để lưu lại trên máy này.")
-    k2.button("\u200b", icon=":material/save:", on_click=luu_khoa, width="stretch", help="Lưu khóa", key="nut_luu_khoa")
-    st.caption("Lấy khóa miễn phí tại openalex.org/settings/api, dán vào ô trên rồi bấm Enter."
-               + (" Khóa chỉ dùng trong phiên này, tải lại trang sẽ phải dán lại." if LA_WEB else ""))
-    if os.path.exists(ANH_HD):
-        with st.expander("Hướng dẫn", icon=":material/help:"):
-            try:
-                st.image(ANH_HD, width="stretch")
-            except TypeError:
-                st.image(ANH_HD, use_container_width=True)
 if kt == "Tùy chọn":
     n1, n2, _ = st.container(key="years").columns([1, 1, 4])
     y1 = int(n1.number_input("Từ năm", 1900, NAM_NAY, 2018, 1, key="nam_tu", on_change=kich_tim, format="%d"))
@@ -1033,15 +978,6 @@ if kt == "Tùy chọn":
 else:
     y2 = NAM_NAY
     y1 = 1990 if KHOANG[kt] is None else NAM_NAY - KHOANG[kt]
-
-def khoa_secrets():
-    try:
-        return str(st.secrets.get("OPENALEX_API_KEY", "")).strip()
-    except Exception:
-        return ""
-
-
-OA_KEY = (st.session_state.get("oa_key") or "").strip() or os.environ.get("OPENALEX_API_KEY", "") or khoa_secrets()
 
 OA_LOI.clear()   # nhật ký lỗi chỉ tính cho lần chạy này
 chay = bam or st.session_state.pop("chay", False)
@@ -1221,8 +1157,6 @@ else:
     if OA_LOI and not kq["urls"]:
         if not OA_KEY:
             canh_bao.warning("OpenAlex đang giới hạn lượt tra cứu (mã " + ", ".join(str(c) for c in sorted(set(OA_LOI))) + "), "
-                             "nên mình đã lấy kết quả từ Crossref thay thế. Phần chủ đề và bài liên quan có thể chưa hiện đủ. "
-                             "Bấm nút OpenAlex và dán khóa miễn phí để dùng đầy đủ.")
+                             "nên mình đã lấy kết quả từ Crossref thay thế. Phần chủ đề và bài liên quan có thể chưa hiện đủ.")
         elif set(OA_LOI) & {401, 403}:
-            canh_bao.warning("Khóa OpenAlex không hợp lệ, mình đã lấy kết quả từ Crossref thay thế. "
-                             "Bấm nút OpenAlex để kiểm tra lại khóa.")
+            canh_bao.warning("Khóa OpenAlex không hợp lệ, mình đã lấy kết quả từ Crossref thay thế.")
