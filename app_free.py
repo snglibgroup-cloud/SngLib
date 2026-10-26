@@ -443,8 +443,10 @@ CSS = """
 :root{--acc:#1B7F66;--link:#1E6FD9;--line:rgba(128,128,128,.26);--soft:rgba(128,128,128,.07);--mute:.66}
 .stApp{font-family:'Be Vietnam Pro',system-ui,sans-serif}
 button,input,textarea{font-family:inherit}
-.block-container{max-width:1240px;padding-top:2.2rem;padding-bottom:4rem}
-header[data-testid="stHeader"]{background:transparent}
+.block-container{max-width:1240px;padding-top:4.2rem;padding-bottom:5rem}
+header[data-testid="stHeader"]{background:inherit;backdrop-filter:none;z-index:999}
+/* Bỏ dòng "Press Enter to submit form" đè lên placeholder của ô tìm kiếm */
+[data-testid="InputInstructions"]{display:none!important}
 a:focus-visible,button:not([data-baseweb="tab"]):focus-visible,summary:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 [role="tab"],[role="tab"]:focus,[role="tab"]:focus-visible,[role="tab"]:active{outline:none!important;box-shadow:none!important}
 [role="tab"]::before,[role="tab"]::after{display:none!important}
@@ -524,7 +526,7 @@ html{-webkit-text-size-adjust:100%}
 /* Thanh mục: cuộn ngang bằng ngón tay, không bị bẻ dòng */
 [data-testid="stSegmentedControl"] > div,[data-testid="stSegmentedControl"] [role="group"]{max-width:100%}
 @media (max-width:768px){
-  .block-container{padding:1rem .8rem 3rem!important;max-width:100%}
+  .block-container{padding:3.4rem .8rem 6rem!important;max-width:100%}
   header[data-testid="stHeader"]{height:2.6rem}
   .mark{font-size:2rem}
   .sub{font-size:.92rem}
